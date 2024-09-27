@@ -8,7 +8,6 @@ class StringUtils {
     private static final Pattern LTRIM_KEEP_NEW_LINES = Pattern.compile("^[ \\t\\x0B\\f\\r\\x85\\xA0]+");
     private static final Pattern RTRIM_KEEP_NEW_LINES = Pattern.compile("[ \\t\\x0B\\f\\r\\x85\\xA0]+$");
     private static final Pattern RTRIM = Pattern.compile("[ \\t\\n\\x0B\\f\\r\\x85\\xA0]+$");
-    private static final Pattern TRIM = Pattern.compile("^[ \\t\\n\\x0B\\f\\r\\x85\\xA0]+|[ \\t\\n\\x0B\\f\\r\\x85\\xA0]+$");
 
     static String ltrim(String s) {
         // https://stackoverflow.com/questions/1060570/why-is-non-breaking-space-not-a-whitespace-character-in-java
@@ -40,7 +39,19 @@ class StringUtils {
     }
 
     static String trim(String s) {
-        return TRIM.matcher(s).replaceAll("");
+        int start = 0;
+        int end = s.length();
+        while (start < end && isWhitespaceOrNewline(s.charAt(start))) {
+            start++;
+        }
+        while (end > start && isWhitespaceOrNewline(s.charAt(end - 1))) {
+            end--;
+        }
+        return s.substring(start, end);
+    }
+
+    private static boolean isWhitespaceOrNewline(char c) {
+        return c == ' ' || c == '\t' || c == '\n' || c == '\u000B' || c == '\f' || c == '\r' || c == '\u00A0' || c == '\u0085';
     }
 
     static int symbolCount(String string) {
