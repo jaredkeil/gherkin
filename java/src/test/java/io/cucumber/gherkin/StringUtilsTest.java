@@ -1,6 +1,5 @@
 package io.cucumber.gherkin;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,5 +55,11 @@ public class StringUtilsTest {
     void testTrim_empty() {
         assertEquals("",
                 StringUtils.trim(""));
+    }
+
+    @Test
+    void testTrim_internalWhitespace() {
+        assertEquals(CUCUMBER + WHITESPACE + CUCUMBER,
+                StringUtils.trim(WHITESPACE + CUCUMBER + WHITESPACE + CUCUMBER + WHITESPACE));
     }
 }
